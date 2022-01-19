@@ -1,0 +1,5 @@
+sensor;port
+sensor_line_1;A0
+sensor_line_2;A1
+ultrasonic/afstandssensor;12
+ultrasonic/afstandssensor;13
