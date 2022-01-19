@@ -1,5 +1,8 @@
-#include "Robot.h"
 #include <Arduino.h>
+#include "Robot.h"
+#include "afstandssensor.h"
+
+AfstandsSensor afstandssensor(13, 12); //VART SKA DENNA VARA?
 
 //public
 bool Robot::line_sensors(){

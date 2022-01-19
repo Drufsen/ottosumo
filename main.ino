@@ -2,10 +2,10 @@
 //  Please read README.md   //
 //////////////////////////////
 
-#include <afstandssensor.h>
+#include "afstandssensor.h"
 #include "Robot.h"
 
-AfstandsSensor afstandssensor(13, 12); //VART SKA DENNA VARA?
+
 
 void setup(){
     Serial.begin(9600);
