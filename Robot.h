@@ -1,6 +1,6 @@
 class Robot{
     public:
-        void read_sensors();
+        bool line_sensors();
+        int ultrasonic();
     private:
-
 };
