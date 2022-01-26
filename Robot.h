@@ -7,5 +7,4 @@ class Robot{
 
         
     private:
-        AfstandsSensor afstandssensor(13, 12);
 };

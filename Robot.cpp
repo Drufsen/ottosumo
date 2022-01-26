@@ -11,6 +11,6 @@ bool Robot::line_sensors(){
 }
 
 int Robot::ultrasonic(){
-    int proximity = (this.afstandssensor.afstandCM());
-    return proximity;
+//    int proximity = (this.afstandssensor.afstandCM());
+//    return proximity;
 }
