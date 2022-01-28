@@ -9,7 +9,7 @@ AfstandsSensor afstandssensor(13, 12);
 
 void setup(){
     Serial.begin(9600);
-    Serial.println("[completed] setup finished ");
+    Serial.println("[completed] Setup finished ");
 }
 
 void loop(){
