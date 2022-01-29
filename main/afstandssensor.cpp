@@ -21,7 +21,7 @@ double AfstandsSensor::afstandCM() {
 }
 
 double AfstandsSensor::afstandCM(float temperature) {
-    // Sikre først at triggerPin er LAV
+    //Sikre først at triggerPin er LAV
     digitalWrite(triggerPin, LOW);
     delayMicroseconds(2);
     //For at aktivere sensoren holdes triggerPin HØJ i 10 microsekunder.
@@ -31,10 +31,10 @@ double AfstandsSensor::afstandCM(float temperature) {
     //Sensoren retunere nu afstanden med at holde echoPin HØJ i en periode svarende til afstanden målt.
     unsigned long durationMicroSec = pulseIn(echoPin, HIGH);
 
-    double speedOfSoundInCmPerMs = 0.03313 + 0.0000606 * temperature; // Cair ≈ (331.3 + 0.606 ⋅ ϑ) m/s
+    double speedOfSoundInCmPerMs = 0.03313 + 0.0000606 * temperature; //Cair ≈ (331.3 + 0.606 ⋅ ϑ) m/s
     double distanceCm = durationMicroSec / 2.0 * speedOfSoundInCmPerMs;
     if (distanceCm == 0 || distanceCm > 400) {
-        return -1.0 ;
+        return 200 ;
     } else {
         return distanceCm;
     }

@@ -33,4 +33,4 @@ class AfstandsSensor {
     int triggerPin, echoPin;
 };
 
-#endif // AFSTANDSSENSOR_H
+#endif //AFSTANDSSENSOR_H

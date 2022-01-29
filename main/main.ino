@@ -10,5 +10,7 @@ void setup(){
 
 void loop(){
   Robot otto = Robot(); //Create the robot object. Constructor preform setup and configuration
-  otto.controller(); //This function controlls the robot during the compatition, it will run untill power is disconnected     
+  while(true)
+    otto.controller(); //Drives the robot based on previous data and sesnor input ...
+                       //... uses no delay statments for fast response time     
 }
