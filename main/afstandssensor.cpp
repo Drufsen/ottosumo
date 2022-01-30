@@ -34,7 +34,7 @@ double AfstandsSensor::afstandCM(float temperature) {
     double speedOfSoundInCmPerMs = 0.03313 + 0.0000606 * temperature; //Cair ≈ (331.3 + 0.606 ⋅ ϑ) m/s
     double distanceCm = durationMicroSec / 2.0 * speedOfSoundInCmPerMs;
     if (distanceCm == 0 || distanceCm > 400) {
-        return 200 ;
+        return 400 ;
     } else {
         return distanceCm;
     }

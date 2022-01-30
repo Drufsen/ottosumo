@@ -11,6 +11,5 @@ void setup(){
 void loop(){
   Robot otto = Robot(); //Create the robot object. Constructor preform setup and configuration
   while(true)
-    otto.controller(); //Drives the robot based on previous data and sesnor input ...
-                       //... uses no delay statments for fast response time     
+    otto.controller(); //Drives the robot based on previous data and sesnor input  
 }

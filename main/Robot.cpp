@@ -46,7 +46,7 @@ void Robot::controller() { //Drives the robot based on previous data and sesnor 
       else //Else, the only remaining driving mode is search
         this->search(); //Continue to search
   }
-  //this->sensor_debugging();
+  this->sensor_debugging();
 }
 
 void Robot::drive(direction dir, short left_speed = L_MOTOR_SPEED, short right_speed = R_MOTOR_SPEED){ //Drives the robot in the specified direction dir with the speeds specified by the two other parameters
@@ -111,6 +111,7 @@ bool Robot::is_borders_clear() { //Reads the line sensors and returns true if no
   //If the program get to this line, we did detect borders
   this->driving_mode = 'b'; //Set new driving mode
   this->search_timer = 0; //Make sure that the search function is reset, this is needed in case we detect the border while searching
+  this->follow_timer = 0; //Make sure that the follow function is reset, this is needed in case we detect the border while following a robot
   return false;
 }
 
@@ -148,9 +149,8 @@ void Robot::search() { //Searches for other robots in the arena
     this->search_timer = millis()+ MAX_SEARCH_ROTATE_TIME; //Set max time for rotation
     this->drive(right, L_MOTOR_SPEED/SLOW_SPEED_FACTOR, R_MOTOR_SPEED/SLOW_SPEED_FACTOR); //Start rotating
   }
-
-  if(this->search_mode_rotate && ultrasonic->afstandCM() < MAX_SEARCH_DISTANCE) { //If we find a robot (it will only look while rotating
-                                                                                  //because it will need to know which side of the robot i detected, see follow function for details)
+  
+  if(this->search_mode_rotate && ultrasonic->afstandCM() < MAX_SEARCH_DISTANCE && ultrasonic->afstandCM() < MAX_SEARCH_DISTANCE) { //If we find a robot (it will only look while rotating), it will preform two messurments to lower the risk of false triger                                                                            //because it will need to know which side of the robot i detected, see follow function for details)
     driving_mode = 'f'; //Set driving mode to follow
     this->search_timer = 0; //To let the function know that we are starting a new search next time it is called
   }
@@ -161,14 +161,21 @@ void Robot::follow() { //Follows and pushes other robots out of the arena
    *  1. Starting point, the search found the left corner of another robot (left corner detected since always rotate clockwise)
    *  2. Now go forward and a little to the right untill the corner of the robbot disappears (the sensor reads a large value)
    *  3. Go forward and a litle to the right untill the corner of the robbot appears (the sensor readsa shorter distance)
-   *  4. Repeat step 2 and 3 untill  we push oponent out of the arena (indicated by the fact that we get to the border)   
+   *  4. Repeat step 2 and 3 untill  we push oponent out of the arena (indicated by the fact that we get to the border)
    *  5. The border function will change mode to 'b'
-   *  If the misses or fails to hit the oponent it will hit the border and the 'b' mode will activate. 
-   */ 
-  if(ultrasonic->afstandCM() < MAX_SEARCH_DISTANCE + 15) //If we see oponents left corner (we add a little to the scaning distance due to mesurmet inaccuracy and oponent's movemnts)
-    drive(forward, L_MOTOR_SPEED, R_MOTOR_SPEED/SLOW_SPEED_FACTOR); //Steer a little to the left aim left of the robot
+   *  If the misses or fails to hit the oponent it will hit the border and the 'b' mode will activate or the timeout timer will return the robot to 's' mode. 
+   */
+  if(this->follow_timer == 0) //If zero we have not configured the follow timer
+    this->follow_timer = millis() + FOLLOW_MAX_TIME; //Set new timer by specifed config parameter
+  else if (this->follow_timer < millis()) { //If max time is passed
+    this->follow_timer = 0; //Reset timer to zero so that the function knows that it should start a new timer next time it is called
+    this->driving_mode = 's'; //Return to search mode
+  }
+
+  if(ultrasonic->afstandCM() < MAX_SEARCH_DISTANCE + 15) //If we see oponents left corner (we add a little to the scaning distance due to mesurmnet inaccuracy and oponent's movemnts)
+    drive(forward, L_MOTOR_SPEED, R_MOTOR_SPEED/(SLOW_SPEED_FACTOR*2)); //Steer a little to the left aim left of the robot
   else //We do not see the robot
-    drive(forward, L_MOTOR_SPEED/SLOW_SPEED_FACTOR, R_MOTOR_SPEED); //Steer a little to the right so that we align with the left corner agin    
+    drive(forward, L_MOTOR_SPEED/(SLOW_SPEED_FACTOR*2), R_MOTOR_SPEED); //Steer a little to the right so that we align with the left corner agin
 }
 
 void Robot::sensor_debugging() { //Prints sensor values to serial monitor
